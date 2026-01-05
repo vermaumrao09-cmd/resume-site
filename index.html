@@ -1,15 +1,48 @@
-<div class="flex justify-center gap-4">
-    <a href="contact.html" class="btn-small bg-[#1d1d1f] text-white hover:bg-[#16a34a]">Build My CV</a>
-    <a href="#samples" class="btn-small bg-white border border-black text-black hover:bg-gray-50">View Work</a>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerCraft | Professional CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { border-radius: 0px !important; }
+        body { font-family: 'sans-serif'; background-color: #ffffff; }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
 
-<div class="hidden md:flex items-center space-x-12 text-[11px] font-bold text-gray-500 uppercase tracking-[1px]">
-    <a href="index.html" class="text-black">Home</a>
-    <a href="#pricing" class="hover:text-[#16a34a] transition-colors">Plans</a>
-    <a href="contact.html" class="hover:text-[#16a34a] transition-colors">Support</a>
-</div>
+    <nav class="p-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-50">
+        <div class="text-xl font-bold uppercase tracking-tighter">CareerCraft<span class="text-green-600">.</span></div>
+        <div class="space-x-6 text-xs font-bold uppercase tracking-widest hidden md:flex">
+            <a href="index.html" class="text-green-600">Home</a>
+            <a href="contact.html" class="hover:text-green-600">Support</a>
+        </div>
+        <a href="contact.html" class="bg-green-600 text-white px-5 py-2 text-xs font-bold uppercase">Start</a>
+    </nav>
 
-<div class="flex flex-col space-y-8 text-left">
-    <a href="index.html" onclick="toggleMenu()" class="text-5xl font-black tracking-tighter text-black hover:text-[#16a34a]">HOME</a>
-    <a href="contact.html" onclick="toggleMenu()" class="text-5xl font-black tracking-tighter text-black hover:text-[#16a34a]">SUPPORT</a>
-</div>
+    <section class="py-24 px-6 text-center">
+        <h1 class="text-5xl md:text-8xl font-black tracking-tighter mb-8 leading-none">
+            GET <span class="text-green-600">HIRED</span><br>FASTER.
+        </h1>
+        <p class="text-gray-500 max-w-lg mx-auto mb-10 font-medium">
+            Professional ATS-friendly resumes designed to get you noticed by top recruiters.
+        </p>
+        <div class="flex justify-center gap-4">
+            <a href="contact.html" class="bg-black text-white px-8 py-4 font-bold uppercase text-sm hover:bg-green-600 transition">Build My CV</a>
+        </div>
+    </section>
+
+    <section class="bg-gray-50 py-20 px-6 text-center border-t border-gray-100">
+        <h2 class="text-2xl font-bold mb-4 uppercase">Ready to start?</h2>
+        <p class="mb-8 text-gray-600">Click below to contact us on WhatsApp or Email.</p>
+        <a href="contact.html" class="border-2 border-black px-8 py-3 font-bold uppercase text-sm hover:bg-black hover:text-white transition">Go to Contact Page</a>
+    </section>
+
+    <footer class="p-10 bg-black text-white text-center">
+        <div class="text-lg font-bold mb-2">CareerCraft.</div>
+        <p class="text-gray-500 text-[10px] uppercase tracking-widest">© 2025 All Rights Reserved</p>
+    </footer>
+
+</body>
+</html>
