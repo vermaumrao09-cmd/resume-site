@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Contact Us | CareerCraft</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1d1d1f; -webkit-font-smoothing: antialiased; overflow-x: hidden; font-style: normal !important; }
+        * { border-radius: 0px !important; } 
+        .apple-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%); }
+        .menu-gloss { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(100px) saturate(210%); -webkit-backdrop-filter: blur(100px) saturate(210%); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal { opacity: 0; filter: blur(10px); transform: translateY(15px); transition: all 0.8s cubic-bezier(0.15, 0, 0.15, 1); }
+        .reveal.active { opacity: 1; filter: blur(0); transform: translateY(0); }
+        .btn-small { padding: 0.6rem 1.4rem; font-size: 0.75rem; font-weight: 700; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; width: max-content; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-small:hover { transform: translateY(-2px); box-shadow: 4px 4px 0px rgba(0,0,0,1); }
+        #mobileMenu { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(-100%); opacity: 0; }
+        #mobileMenu.active { transform: translateY(0); opacity: 1; }
+        .footer-link { color: #86868b; transition: color 0.2s; font-size: 11px; }
+        .footer-link:hover { color: #16a34a; }
+        .contact-card { background: #fbfbfd; border: 2px solid #f2f2f2; padding: 40px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .contact-card:hover { transform: translateY(-5px); background: #ffffff; border-color: #000; box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="fixed top-0 w-full z-[200] apple-nav border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-[18px] font-bold tracking-tight text-black uppercase">CareerCraft<span class="text-[#16a34a]">.</span></div>
+            <div class="hidden md:flex items-center space-x-12 text-[11px] font-bold text-gray-500 uppercase tracking-[1px]">
+                <a href="index.html" class="hover:text-black transition">Home</a>
+                <a href="#" class="hover:text-[#16a34a] transition">Plans</a>
+                <a href="#" class="hover:text-[#16a34a] transition">Features</a>
+                <a href="contact.html" class="text-[#16a34a]">Support</a>
+            </div>
+            <div class="md:hidden flex items-center space-x-4">
+                <a href="#" class="btn-small bg-[#16a34a] text-white hover:bg-black">Start</a>
+                <button onclick="toggleMenu()" class="p-2 space-y-[6px] focus:outline-none">
+                    <span class="block w-6 h-[2px] bg-black"></span>
+                    <span class="block w-6 h-[2px] bg-black"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobileMenu" class="fixed inset-0 menu-gloss z-[250] px-10 flex flex-col justify-center border-l border-gray-200">
+        <button onclick="toggleMenu()" class="absolute top-6 right-8 p-2">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="flex flex-col space-y-8 text-left">
+            <a href="index.html" onclick="toggleMenu()" class="text-5xl font-black tracking-tighter text-black hover:text-[#16a34a]">HOME</a>
+            <a href="#" onclick="toggleMenu()" class="text-5xl font-black tracking-tighter text-black hover:text-[#16a34a]">PLANS</a>
+            <a href="#" onclick="toggleMenu()" class="text-5xl font-black tracking-tighter text-black hover:text-[#16a34a]">FEATURES</a>
+            <a href="contact.html" onclick="toggleMenu()" class="text-5xl font-black tracking-tighter text-black hover:text-[#16a34a]">SUPPORT</a>
+        </div>
+    </div>
+
+    <section class="pt-44 pb-16 px-6 reveal text-left max-w-6xl mx-auto">
+        <h1 class="text-[36px] md:text-7xl font-black tracking-tighter mb-6 text-black uppercase">Connect with <br>the Studio.</h1>
+        <p class="text-gray-500 text-sm md:text-xl max-w-xl font-medium leading-relaxed">Whether you have a question or are ready to skyrocket your career, we are here for you.</p>
+    </section>
+
+    <section class="max-w-6xl mx-auto py-12 px-6 reveal">
+        <div class="grid md:grid-cols-2 gap-8">
+            <a href="https://wa.me/919198405504" target="_blank" class="contact-card group">
+                <div class="w-14 h-14 bg-[#16a34a] flex items-center justify-center mb-8">
+                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.185-.573c.948.517 1.871.887 3.134.888 3.181 0 5.765-2.587 5.766-5.767 0-3.18-2.585-5.766-5.766-5.766zm3.29 8.305c-.144.405-.833.778-1.149.827-.297.047-.681.082-1.086-.144-1.393-.781-2.278-2.264-2.348-2.359-.07-.094-.572-.76-.572-1.449 0-.688.351-1.026.477-1.164.127-.138.277-.172.37-.172.093 0 .185.001.266.005.086.004.202-.033.315.241.116.281.399.972.434 1.043.035.071.058.154.011.248-.046.094-.07.153-.139.234-.07.081-.147.18-.21.241-.07.07-.143.147-.062.287.081.14.363.599.778.969.537.479 1.033.629 1.149.707.116.077.185.064.254-.017.069-.081.301-.351.382-.472.081-.121.162-.102.272-.061.11.04.698.329.818.39.121.061.202.091.231.141.029.05.029.29-.115.695z"/></svg>
+                </div>
+                <h3 class="text-2xl font-black mb-2 text-black uppercase">WhatsApp Support</h3>
+                <p class="text-gray-500 text-sm font-medium mb-8">Direct chat for instant queries.</p>
+                <span class="text-lg font-bold text-black group-hover:text-[#16a34a] transition-colors">+91 91984 05504</span>
+            </a>
+
+            <a href="mailto:support@careercraft.com" class="contact-card group">
+                <div class="w-14 h-14 bg-black flex items-center justify-center mb-8">
+                    <svg width="24" height="24" fill="none" stroke="white" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="text-2xl font-black mb-2 text-black uppercase">Email Inquiry</h3>
+                <p class="text-gray-500 text-sm font-medium mb-8">Send your details for consultation.</p>
+                <span class="text-lg font-bold text-black group-hover:text-[#16a34a] transition-colors">support@careercraft.com</span>
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-[#000000] text-white pt-24 pb-12 px-10 text-left border-t-4 border-[#16a34a]">
+        <div class="max-w-6xl mx-auto flex flex-col space-y-16">
+            <div class="text-left">
+                <div class="text-[24px] font-black tracking-tighter uppercase">CareerCraft<span class="text-[#16a34a]">.</span></div>
+                <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-[2px] mt-4">Professional Resume Writing Services</p>
+            </div>
+            <div class="pt-10 border-t border-zinc-900 text-[10px] text-zinc-600 uppercase font-bold tracking-widest text-left">
+                © 2025 CareerCraft. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
+        function reveal() {
+            var revs = document.querySelectorAll(".reveal");
+            for (var i = 0; i < revs.length; i++) {
+                var wh = window.innerHeight;
+                var top = revs[i].getBoundingClientRect().top;
+                if (top < wh - 80) { revs[i].classList.add("active"); }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        window.onload = reveal;
+    </script>
+</body>
+</html>
