@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Why Choose Us | Resumevala Premium ATS Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1d1d1f; -webkit-font-smoothing: antialiased; overflow-x: hidden; font-style: normal !important; }
+        .apple-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%); }
+        
+        /* Apple Style Frosted Glass Menu */
+        .menu-gloss { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(100px) saturate(210%); 
+            -webkit-backdrop-filter: blur(100px) saturate(210%);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal { opacity: 0; filter: blur(10px); transform: translateY(15px); transition: all 0.8s cubic-bezier(0.15, 0, 0.15, 1); }
+        .reveal.active { opacity: 1; filter: blur(0); transform: translateY(0); }
+
+        .btn-small { padding: 0.5rem 1.2rem; font-size: 0.72rem; font-weight: 700; border-radius: 999px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; width: max-content; }
+
+        #mobileMenu { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(-100%); opacity: 0; }
+        #mobileMenu.active { transform: translateY(0); opacity: 1; }
+
+        .footer-link { color: #86868b; transition: color 0.2s; font-size: 11px; }
+        .footer-link:hover { color: #007aff; }
+
+        /* Why Cards Styles */
+        .step-box { border-left: 2px solid #f2f2f2; padding-left: 24px; position: relative; margin-bottom: 40px; }
+        .step-box::before { content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; background: #007aff; border-radius: 50%; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="fixed top-0 w-full z-[200] apple-nav border-b border-gray-100/40">
+        <div class="max-w-6xl mx-auto px-6 py-3.5 flex justify-between items-center">
+            <div class="text-[17px] font-bold tracking-tight text-black">Resumevala<span class="text-[#007aff]">.</span></div>
+            
+            <div class="hidden md:flex items-center space-x-10 text-[11px] font-medium text-black uppercase tracking-[1.5px]">
+                <a href="index.html" class="hover:text-[#007aff] transition">Home</a>
+                <a href="pricing.html" class="hover:text-[#007aff] transition">Pricing</a>
+                <a href="why-choose.html" class="text-black">Why Choose</a>
+                <a href="contact.html" class="hover:text-[#007aff] transition">Contact Us</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="order.html" class="btn-small bg-[#007aff] text-white">Order</a>
+                <button onclick="toggleMenu()" class="md:hidden p-2 space-y-[5px] focus:outline-none">
+                    <span class="block w-6 h-[1.2px] bg-black"></span>
+                    <span class="block w-6 h-[1.2px] bg-black"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobileMenu" class="fixed inset-0 menu-gloss z-[250] px-10 flex flex-col justify-center">
+        <button onclick="toggleMenu()" class="absolute top-6 right-8 p-2"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        <div class="flex flex-col space-y-8 text-left">
+            <a href="index.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Home</a>
+            <a href="pricing.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Pricing</a>
+            <a href="why-choose.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Why Choose</a>
+            <a href="contact.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Contact Us</a>
+        </div>
+    </div>
+
+    <section class="pt-40 pb-16 px-10 reveal text-left max-w-6xl mx-auto">
+        <h1 class="text-[34px] md:text-7xl font-bold tracking-tight mb-6 text-black">Why Resumevala.</h1>
+        <p class="text-gray-400 text-sm md:text-xl max-w-2xl font-medium leading-relaxed">Most resumes fail because they are built for humans, but screened by bots. We solve that with elite ATS engineering.</p>
+    </section>
+
+    <section class="max-w-6xl mx-auto py-12 px-10 reveal text-left">
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="p-10 bg-gray-50 rounded-[40px] border border-gray-100">
+                <h3 class="text-2xl font-bold mb-4 text-black">ATS DNA Architecture</h3>
+                <p class="text-gray-500 text-[14px] leading-relaxed font-medium">Standard templates get blocked by AI before a human ever sees them. We reverse-engineer recruitment algorithms to ensure your resume reaches the HR desk every single time.</p>
+            </div>
+            <div class="p-10 bg-gray-50 rounded-[40px] border border-gray-100">
+                <h3 class="text-2xl font-bold mb-4 text-black">Psychological Design</h3>
+                <p class="text-gray-500 text-[14px] leading-relaxed font-medium">Once you pass the bot, you must impress the human. Our minimal, Apple-inspired layouts use eye-tracking principles to highlight your biggest wins in less than 6 seconds.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto py-24 px-10 reveal text-left">
+        <h2 class="text-3xl md:text-5xl font-extrabold mb-16 tracking-tight text-black">Our Process.</h2>
+        
+        <div class="max-w-3xl">
+            <div class="step-box">
+                <h4 class="text-lg font-bold mb-2">01. Order & Strategy</h4>
+                <p class="text-gray-400 text-sm font-medium">You choose your plan. We analyze your target industry keywords and recruitment patterns.</p>
+            </div>
+            <div class="step-box">
+                <h4 class="text-lg font-bold mb-2">02. The DNA Mapping</h4>
+                <p class="text-gray-400 text-sm font-medium">We architect your experience using data-driven verbs and power phrases that bots love.</p>
+            </div>
+            <div class="step-box">
+                <h4 class="text-lg font-bold mb-2">03. Elite Styling</h4>
+                <p class="text-gray-400 text-sm font-medium">Our design team applies clean typography and modern spacing for a premium look.</p>
+            </div>
+            <div class="step-box" style="border:none">
+                <h4 class="text-lg font-bold mb-2 text-[#007aff]">04. Guaranteed Delivery</h4>
+                <p class="text-gray-400 text-sm font-medium">Get your final ATS-ready document in your inbox. Ready to land your dream job.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 reveal text-center">
+        <div class="flex flex-col items-center justify-center gap-4">
+            <h2 class="text-2xl font-bold mb-6 text-black">Ready to be unstoppable?</h2>
+            <div class="flex flex-row gap-3">
+                <a href="order.html" class="btn-small bg-[#007aff] text-white">Get Resume</a>
+                <a href="https://wa.me/918004444282" class="btn-small bg-[#25d366] text-white">WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-[#000000] text-white pt-24 pb-12 px-10 text-left">
+        <div class="max-w-6xl mx-auto flex flex-col space-y-16">
+            <div class="text-left">
+                <div class="text-[22px] font-black tracking-tighter">Resumevala<span class="text-[#007aff]">.</span></div>
+                <p class="text-zinc-600 text-xs font-medium uppercase tracking-[3px] mt-4">Architecting Careers since 2025</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
+                <div class="flex flex-col space-y-4">
+                    <h5 class="text-[9px] text-zinc-500 uppercase font-black tracking-widest text-left">Navigation</h5>
+                    <div class="flex flex-col space-y-2">
+                        <a href="index.html" class="footer-link">Home</a>
+                        <a href="order.html" class="footer-link">Get Resume</a>
+                        <a href="pricing.html" class="footer-link">Pricing</a>
+                        <a href="contact.html" class="footer-link">Contact Us</a>
+                    </div>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <h5 class="text-[9px] text-zinc-500 uppercase font-black tracking-widest text-left">Legal</h5>
+                    <div class="flex flex-col space-y-2 text-left">
+                        <a href="/terms" class="footer-link">Terms of Service</a>
+                        <a href="/privacy" class="footer-link">Privacy Policy</a>
+                        <a href="/refund" class="footer-link">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-10 border-t border-zinc-900 text-[9px] text-zinc-700 uppercase font-black tracking-widest text-left">
+                © 2025 Resumevala. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
+        function reveal() {
+            var revs = document.querySelectorAll(".reveal");
+            for (var i = 0; i < revs.length; i++) {
+                var wh = window.innerHeight;
+                var top = revs[i].getBoundingClientRect().top;
+                if (top < wh - 80) { revs[i].classList.add("active"); }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        window.onload = reveal;
+    </script>
+</body>
+</html>

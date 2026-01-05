@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Legal & Policies | Resumevala</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1d1d1f; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        .apple-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%); }
+        
+        .menu-gloss { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(100px) saturate(210%); 
+            -webkit-backdrop-filter: blur(100px) saturate(210%);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-small { padding: 0.5rem 1.2rem; font-size: 0.72rem; font-weight: 700; border-radius: 999px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; width: max-content; }
+
+        #mobileMenu { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(-100%); opacity: 0; }
+        #mobileMenu.active { transform: translateY(0); opacity: 1; }
+
+        .footer-link { color: #86868b; transition: color 0.2s; font-size: 11px; }
+        .footer-link:hover { color: #007aff; }
+
+        /* --- MODERN SEGMENTED CONTROL --- */
+        .segment-container {
+            background-color: #f5f5f7;
+            padding: 4px;
+            border-radius: 999px;
+            display: inline-flex;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+        }
+        
+        .tab-btn {
+            padding: 10px 28px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #86868b;
+            background: transparent;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            border: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-btn:hover { color: #000; }
+
+        .tab-btn.active {
+            background-color: #000000;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .legal-content h3 { font-size: 17px; font-weight: 700; color: #000; margin-top: 32px; margin-bottom: 12px; }
+        .legal-content p { font-size: 14px; color: #515154; line-height: 1.7; margin-bottom: 16px; font-weight: 450; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="fixed top-0 w-full z-[200] apple-nav border-b border-gray-100/40">
+        <div class="max-w-6xl mx-auto px-6 py-3.5 flex justify-between items-center">
+            <div class="text-[17px] font-bold tracking-tight text-black">Resumevala<span class="text-[#007aff]">.</span></div>
+            <div class="hidden md:flex items-center space-x-10 text-[11px] font-medium text-gray-400 uppercase tracking-[1.5px]">
+                <a href="index.html" class="hover:text-black transition">Home</a>
+                <a href="pricing.html" class="hover:text-black transition">Pricing</a>
+                <a href="why-choose.html" class="hover:text-black transition">Why Choose</a>
+                <a href="contact.html" class="hover:text-black transition">Contact Us</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="order.html" class="btn-small bg-[#007aff] text-white">Order</a>
+                <button onclick="toggleMenu()" class="md:hidden p-2 space-y-[5px] focus:outline-none">
+                    <span class="block w-6 h-[1.2px] bg-black"></span>
+                    <span class="block w-6 h-[1.2px] bg-black"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobileMenu" class="fixed inset-0 menu-gloss z-[250] px-10 flex flex-col justify-center">
+        <button onclick="toggleMenu()" class="absolute top-6 right-8 p-2"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        <div class="flex flex-col space-y-8 text-left">
+            <a href="index.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Home</a>
+            <a href="pricing.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Pricing</a>
+            <a href="why-choose.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Why Choose</a>
+            <a href="contact.html" onclick="toggleMenu()" class="text-4xl font-extrabold tracking-tighter text-black">Contact Us</a>
+        </div>
+    </div>
+
+    <section class="pt-40 pb-10 px-6 text-center">
+        <h1 class="text-[34px] md:text-6xl font-bold tracking-tight mb-4 text-black">Legal Center</h1>
+        <p class="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto font-medium">Transparency is the core of our business.</p>
+    </section>
+
+    <div class="text-center mb-16">
+        <div class="segment-container">
+            <button onclick="showTab('terms')" id="btn-terms" class="tab-btn active">Terms</button>
+            <button onclick="showTab('privacy')" id="btn-privacy" class="tab-btn">Privacy</button>
+            <button onclick="showTab('refund')" id="btn-refund" class="tab-btn">Refund</button>
+        </div>
+    </div>
+
+    <section class="max-w-3xl mx-auto px-6 pb-24 legal-content text-left">
+        
+        <div id="terms" class="tab-content block">
+            <h2 class="text-xl font-bold mb-6 border-b border-gray-100 pb-4">Terms of Service</h2>
+            <p>Welcome to Resumevala. By accessing or using our website and services, you agree to be bound by the following terms and conditions.</p>
+            <h3>1. Service Description</h3>
+            <p>Resumevala provides professional resume writing, LinkedIn profile optimization, and cover letter writing services ("Services"). Our goal is to optimize your career documents for Applicant Tracking Systems (ATS) and human recruiters.</p>
+            <h3>2. User Obligations</h3>
+            <p>You agree to provide accurate, current, and complete information during the order process. We are not responsible for any rejection or failure resulting from incorrect information provided by the user.</p>
+            <h3>3. Intellectual Property</h3>
+            <p>Once the final document is delivered and payment is confirmed, you own the rights to your personal resume. However, the templates, layouts, and design elements remain the intellectual property of Resumevala.</p>
+            <h3>4. Delivery Timeline</h3>
+            <p>We strive to deliver all orders within the stipulated time frame (24 hours for Essential, 12 hours for Elite Pro). However, delays caused by missing information from the client are not our liability.</p>
+            <h3>5. Revisions</h3>
+            <p>We offer unlimited revisions for 7 days after the delivery of the first draft. Revisions must be reasonable and within the scope of the original order.</p>
+        </div>
+
+        <div id="privacy" class="tab-content hidden">
+            <h2 class="text-xl font-bold mb-6 border-b border-gray-100 pb-4">Privacy Policy</h2>
+            <p>Your privacy is critically important to us. This policy explains how we collect, use, and protect your personal information.</p>
+            <h3>1. Information We Collect</h3>
+            <p>We collect information that you voluntarily provide to us, including your name, email address, phone number, employment history, education details, and any other data required to build your resume.</p>
+            <h3>2. How We Use Your Data</h3>
+            <p>Your data is used solely for the purpose of creating your career documents. We do not sell, trade, or rent your personal identification information to others.</p>
+            <h3>3. Data Protection & Deletion</h3>
+            <p>We implement security measures to maintain the safety of your personal information. <strong>Crucially, we adhere to a strict data deletion policy.</strong> Once your project is completed and delivered, all your personal data is permanently deleted from our local servers within 30 days to ensure your privacy.</p>
+            <h3>4. Third-Party Services</h3>
+            <p>We may use third-party payment gateways (like UPI, Razorpay, etc.) to process transactions. These entities have their own privacy policies regarding the information we are required to provide to them for your purchase-related transactions.</p>
+        </div>
+
+        <div id="refund" class="tab-content hidden">
+            <h2 class="text-xl font-bold mb-6 border-b border-gray-100 pb-4 text-red-600">No Refund Policy</h2>
+            <p class="font-bold">Please read this section carefully before placing an order.</p>
+            <h3>1. Digital Nature of Goods</h3>
+            <p>Resumevala provides digital services and customized digital products. Due to the nature of these services, which involve manual labor, time, and intellectual property, <strong>we do not offer refunds</strong> under any circumstances once an order has been placed and the work has commenced.</p>
+            <h3>2. No Cancellations</h3>
+            <p>Once payment is made, the order is considered final. We immediately allocate resources and writers to your project, incurring costs that cannot be recovered.</p>
+            <h3>3. Satisfaction Guarantee</h3>
+            <p>While we do not offer monetary refunds, we stand by the quality of our work. If you are not satisfied with the initial draft, we offer <strong>unlimited free revisions</strong> until you are completely happy with the document. We will work with you to correct any errors or adjust the content to your liking.</p>
+            <h3>4. Exception</h3>
+            <p>In the rare event that we fail to deliver the service entirely (e.g., no draft provided after 7 days of the promised deadline), a full refund may be considered at the sole discretion of Resumevala management.</p>
+        </div>
+
+        <div class="mt-16 pt-10 border-t border-gray-100">
+            <p class="text-[13px] text-gray-400 font-medium mb-1">Have any legal questions or issues?</p>
+            <a href="mailto:contact@resumevala.in" class="text-[#007aff] font-bold text-sm hover:underline">contact@resumevala.in</a>
+        </div>
+
+    </section>
+
+    <footer id="contact" class="bg-[#000000] text-white pt-24 pb-12 px-10 text-left">
+        <div class="max-w-6xl mx-auto flex flex-col space-y-16">
+            <div class="text-left">
+                <div class="text-[22px] font-black tracking-tighter">Resumevala<span class="text-[#007aff]">.</span></div>
+                <p class="text-zinc-600 text-xs font-medium uppercase tracking-[3px] mt-4">Architecting Careers since 2025</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
+                <div class="flex flex-col space-y-4">
+                    <h5 class="text-[9px] text-zinc-500 uppercase font-black tracking-widest text-left">Navigation</h5>
+                    <div class="flex flex-col space-y-2">
+                        <a href="index.html" class="footer-link">Home</a>
+                        <a href="order.html" class="footer-link">Get Resume</a>
+                        <a href="pricing.html" class="footer-link">Pricing</a>
+                        <a href="contact.html" class="footer-link">Contact Us</a>
+                    </div>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <h5 class="text-[9px] text-zinc-500 uppercase font-black tracking-widest text-left">Legal</h5>
+                    <div class="flex flex-col space-y-2 text-left">
+                        <a href="/terms" class="footer-link text-left">Terms of Service</a>
+                        <a href="/privacy" class="footer-link text-left">Privacy Policy</a>
+                        <a href="/refund" class="footer-link text-left">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-10 border-t border-zinc-900 text-[9px] text-zinc-700 uppercase font-black tracking-widest text-left">
+                © 2025 Resumevala. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
+
+        // AUTO-DETECT URL AND SWITCH TAB
+        document.addEventListener("DOMContentLoaded", function() {
+            const path = window.location.pathname.toLowerCase();
+            
+            if (path.includes("privacy")) {
+                showTab('privacy');
+            } else if (path.includes("refund")) {
+                showTab('refund');
+            } else {
+                showTab('terms'); // Default to Terms
+            }
+        });
+
+        function showTab(tabId) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            const content = document.getElementById(tabId);
+            if(content) { content.classList.remove('hidden'); content.classList.add('block'); }
+
+            // Switch Active Button Style
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+                el.style.backgroundColor = "transparent";
+                el.style.color = "#86868b";
+            });
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if(activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.style.backgroundColor = "#000000";
+                activeBtn.style.color = "#ffffff";
+            }
+        }
+    </script>
+</body>
+</html>
