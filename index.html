@@ -2,29 +2,30 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Insta Reel Downloader - Direct Bypass</title>
+    <title>Direct Insta Downloader</title>
     <style>
         body { font-family: 'Inter', sans-serif; background: #09090b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .card { background: #18181b; padding: 2rem; border-radius: 20px; border: 1px solid #27272a; width: 100%; max-width: 400px; text-align: center; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #27272a; background: #09090b; color: white; margin-bottom: 15px; box-sizing: border-box; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #27272a; background: #09090b; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; }
         button { width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(45deg, #f09433, #dc2743); color: white; font-weight: bold; cursor: pointer; }
-        #status { margin-top: 15px; font-size: 0.9rem; }
-        .result-link { display: block; margin-top: 20px; color: #22c55e; font-weight: bold; text-decoration: none; border: 1px solid #22c55e; padding: 10px; border-radius: 8px; }
+        #status { margin-top: 15px; font-size: 0.85rem; color: #94a3b8; }
+        .dl-link { display: block; margin-top: 20px; color: #22c55e; text-decoration: none; border: 1px solid #22c55e; padding: 10px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>Reel Downloader</h2>
-    <input type="text" id="reelUrl" placeholder="Paste Instagram Link Here...">
-    <button onclick="startDownload()">Download Video</button>
+    <p style="font-size: 0.8rem; margin-bottom: 15px; color: #94a3b8;">Direct Frontend Method</p>
+    <input type="text" id="reelUrl" placeholder="Instagram Link Paste Karein...">
+    <button onclick="downloadNow()">Download Video</button>
     <div id="status"></div>
 </div>
 
 <script>
-    // SHA-1 Generator (Unke source code ke logic ke mutabiq)
-    async function generateSignature(token, url) {
-        const salt = "Khushi_Secret_Salt_2026";
+    // SHA-1 Signature Generator (Source Code Logic)
+    async function getSignature(token, url) {
+        const salt = "Khushi_Secret_Salt_2026"; // Code se mila salt
         const message = token + url + salt;
         const encoder = new TextEncoder();
         const data = encoder.encode(message);
@@ -33,47 +34,49 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    async function startDownload() {
-        const url = document.getElementById('reelUrl').value;
+    async function downloadNow() {
+        const reelUrl = document.getElementById('reelUrl').value.trim();
         const status = document.getElementById('status');
-        if(!url) return alert("Link daalein!");
+        if(!reelUrl) return alert("URL zaroori hai!");
 
-        status.innerHTML = "Bypassing Security...";
-        
-        // CORS Proxy taaki browser "Bot" detect na ho aur request block na ho
-        const proxy = "https://corsproxy.io/?";
-        const serverBase = "https://cdn4.fizbk4.workers.dev";
+        status.innerHTML = "Security bypass shuru...";
+
+        // Proxy jo Browser ke CORS error ko bypass karega
+        const proxy = "https://api.allorigins.win/raw?url=";
+        const targetServer = "https://cdn4.fizbk4.workers.dev";
 
         try {
-            // STEP 1: Token lein
-            const tokenRes = await fetch(proxy + encodeURIComponent(serverBase + "/get-token"));
+            // STEP 1: Fresh Token fetch karein
+            status.innerHTML = "Token fetch ho raha hai...";
+            const tokenRes = await fetch(proxy + encodeURIComponent(targetServer + "/get-token"));
             const tokenData = await tokenRes.json();
-            const token = tokenData.token;
+            const freshToken = tokenData.token;
 
-            // STEP 2: Signature banayein
-            const signature = await generateSignature(token, url);
+            // STEP 2: Signature generate karein
+            const signature = await getSignature(freshToken, reelUrl);
 
-            // STEP 3: Video fetch karein
-            const response = await fetch(proxy + encodeURIComponent(serverBase + "/"), {
+            // STEP 3: Main API call (Direct Post)
+            status.innerHTML = "Video link nikal rahe hain...";
+            const response = await fetch(proxy + encodeURIComponent(targetServer + "/"), {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Token-ID': token,
-                    'X-Signature': signature,
-                    'Origin': 'https://reeldownload.net'
-                },
-                body: JSON.stringify({ url: url })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    url: reelUrl,
+                    "X-Token-ID": freshToken,
+                    "X-Signature": signature
+                })
             });
 
+            // Note: AllOrigins proxy POST requests mein headers ko kabhi-kabhi body mein bhejta hai
             const data = await response.json();
 
             if(data.url) {
-                status.innerHTML = `<a href="${data.url}" target="_blank" class="result-link">Download Video Now</a>`;
+                status.innerHTML = `<a href="${data.url}" target="_blank" class="dl-link">✔ Video Download Karein</a>`;
             } else {
-                status.innerHTML = "<span style='color:red;'>Failed: Server ne link nahi diya.</span>";
+                status.innerHTML = "<span style='color:#ef4444;'>Server ne block kiya ya link invalid hai.</span>";
             }
         } catch (err) {
-            status.innerHTML = "<span style='color:red;'>Error: Security block ho gayi hai.</span>";
+            status.innerHTML = "<span style='color:#ef4444;'>CORS Error! Browser ne block kar diya.</span>";
             console.error(err);
         }
     }
