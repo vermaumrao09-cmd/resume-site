@@ -2,70 +2,61 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Insta Downloader - Final Bypass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insta Reel Downloader - Final Fix</title>
     <style>
-        body { font-family: sans-serif; background: #09090b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #18181b; padding: 2rem; border-radius: 20px; border: 1px solid #27272a; width: 100%; max-width: 400px; text-align: center; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #27272a; background: #000; color: white; margin-bottom: 15px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(45deg, #f09433, #dc2743); color: white; font-weight: bold; cursor: pointer; }
-        #status { margin-top: 15px; color: #94a3b8; font-size: 0.85rem; }
+        body { font-family: 'Inter', sans-serif; background: #09090b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #18181b; padding: 2.5rem; border-radius: 20px; border: 1px solid #27272a; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { margin-bottom: 20px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #27272a; background: #000; color: white; margin-bottom: 20px; box-sizing: border-box; outline: none; }
+        button { width: 100%; padding: 14px; border-radius: 12px; border: none; background: linear-gradient(45deg, #f09433, #dc2743); color: white; font-weight: bold; cursor: pointer; font-size: 16px; }
+        #status { margin-top: 20px; font-size: 0.9rem; }
+        .dl-btn { display: block; margin-top: 20px; background: #22c55e; color: white; text-decoration: none; padding: 12px; border-radius: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Reel Saver</h2>
-    <input type="text" id="reelUrl" placeholder="Paste Link Here...">
-    <button onclick="startDownload()">Download Video</button>
+    <h2>Reel Saver Pro</h2>
+    <input type="text" id="reelUrl" placeholder="Paste Instagram Link Here...">
+    <button onclick="fetchReel()">Download Video</button>
     <div id="status"></div>
 </div>
 
 <script>
-    async function startDownload() {
-        const url = document.getElementById('reelUrl').value.trim();
+    async function fetchReel() {
+        const urlInput = document.getElementById('reelUrl').value.trim();
         const status = document.getElementById('status');
-        const salt = "Khushi_Secret_Salt_2026"; //
         
-        if(!url) return alert("Link daalein!");
-        status.innerHTML = "Bypassing Firewall...";
+        // Screenshot se mili working API Key aur Endpoint
+        const apiKey = "key_ieu0oumk07177j6c3n4fo"; 
+        const baseUrl = "https://cdn.reeldownload.net/fetch";
 
-        // CORS Bypass ke liye proxy
-        const proxy = "https://api.allorigins.win/raw?url=";
-        const target = "https://cdn4.fizbk4.workers.dev"; //
+        if (!urlInput) return alert("Link zaroori hai!");
+
+        status.innerHTML = "Fetching video link...";
 
         try {
-            // 1. Fresh Token lein
-            const tResp = await fetch(proxy + encodeURIComponent(target + "/get-token"));
-            const tData = await tResp.json();
-            const token = tData.token;
+            // Hum direct wahi URL bana rahe hain jo screenshot mein success hua
+            const finalApiUrl = `${baseUrl}?url=${encodeURIComponent(urlInput)}&apikey=${apiKey}`;
 
-            // 2. Signature banayein (SHA-1: token + url + salt)
-            const message = token + url + salt;
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
-            const signature = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+            // CORS issue se bachne ke liye hum AllOrigins use karenge kyuki browser direct block kar sakta hai
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(finalApiUrl)}`;
 
-            // 3. Main Video link request
-            const response = await fetch(proxy + encodeURIComponent(target + "/"), {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    url: url,
-                    "X-Token-ID": token,
-                    "X-Signature": signature
-                })
-            });
-
+            const response = await fetch(proxyUrl);
             const data = await response.json();
-            if(data.url) {
-                status.innerHTML = `<a href="${data.url}" target="_blank" style="color:#22c55e; font-weight:bold;">✔ DOWNLOAD NOW</a>`;
+
+            if (data.status === "success" && data.url) {
+                status.innerHTML = `<a href="${data.url}" target="_blank" class="dl-btn">✔ DOWNLOAD VIDEO NOW</a>`;
             } else {
-                status.innerHTML = "<span style='color:#ef4444;'>Failed: Bot Detected. Security block hai.</span>"; //
+                status.innerHTML = `<span style="color: #ef4444;">Error: ${data.message || "Link nahi mila"}</span>`;
             }
-        } catch (e) {
-            status.innerHTML = "<span style='color:#ef4444;'>Error: Proxy ya Server ne block kiya.</span>";
+        } catch (error) {
+            console.error(error);
+            status.innerHTML = "<span style='color: #ef4444;'>Connection Error. Ek baar page refresh karein.</span>";
         }
     }
 </script>
+
 </body>
 </html>
