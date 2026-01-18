@@ -2,39 +2,40 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Insta Downloader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insta Reel Downloader - Final Fix</title>
     <style>
         body { font-family: 'Inter', sans-serif; background: #09090b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #18181b; padding: 2rem; border-radius: 20px; border: 1px solid #27272a; width: 100%; max-width: 450px; text-align: center; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #27272a; background: #000; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; }
-        button { width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(45deg, #f09433, #dc2743); color: white; font-weight: bold; cursor: pointer; }
-        #status { margin-top: 15px; font-size: 0.85rem; color: #94a3b8; line-height: 1.4; }
-        .dl-link { display: block; margin-top: 20px; color: #22c55e; text-decoration: none; border: 1px solid #22c55e; padding: 10px; border-radius: 8px; font-weight: bold; }
+        .card { background: #18181b; padding: 2rem; border-radius: 20px; border: 1px solid #27272a; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #27272a; background: #000; color: white; margin-bottom: 20px; box-sizing: border-box; outline: none; }
+        button { width: 100%; padding: 14px; border-radius: 10px; border: none; background: linear-gradient(45deg, #f09433, #dc2743); color: white; font-weight: bold; cursor: pointer; font-size: 16px; }
+        #status { margin-top: 20px; font-size: 0.9rem; color: #94a3b8; line-height: 1.5; }
+        .result-link { display: block; margin-top: 20px; color: #22c55e; font-weight: bold; text-decoration: none; border: 2px solid #22c55e; padding: 12px; border-radius: 10px; transition: 0.3s; }
+        .result-link:hover { background: #22c55e; color: white; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Reel Downloader Pro</h2>
-    <p style="font-size: 0.75rem; margin-bottom: 15px; color: #94a3b8;">Multi-Server Support Enabled</p>
-    <input type="text" id="reelUrl" placeholder="Instagram Link Paste Karein...">
-    <button onclick="processDownload()">Download Video</button>
+    <h2 style="margin-bottom: 10px;">Reel Saver Pro</h2>
+    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">Direct Device-to-Server Method (No Worker)</p>
+    <input type="text" id="reelUrl" placeholder="Paste Instagram Link Here...">
+    <button onclick="processDownload()" id="mainBtn">Video Download Karein</button>
     <div id="status"></div>
 </div>
 
 <script>
-    // 1. Source code se nikali gayi Server List
-    const SERVER_LIST = [
+    // --- Configuration (Source Code Logic) ---
+    const SERVERS = [
         "https://cdn1.fizbk1.workers.dev", "https://cdn2.fizbk2.workers.dev",
-        "https://cdn3.fizbk3.workers.dev", "https://cdn4.fizbk4.workers.dev",
-        "https://cdn5.fizbk5.workers.dev", "https://cdn6.fizbk6.workers.dev",
-        "https://cdn7.fizbk7.workers.dev", "https://cdn8.fizbk8.workers.dev",
-        "https://cdn9.fizbk9.workers.dev", "https://cdn10.fizbk10.workers.dev"
+        "https://cdn4.fizbk4.workers.dev", "https://cdn10.fizbk10.workers.dev"
     ];
+    const SALT = "Khushi_Secret_Salt_2026"; //
+    const PROXY = "https://api.allorigins.win/raw?url="; //
 
-    const _xSalt = "Khushi_Secret_Salt_2026"; // Secret Salt
-
-    async function generateSHA1(message) {
+    // SHA-1 Signature Function
+    async function makeSignature(token, url) {
+        const message = token + url + SALT; //
         const encoder = new TextEncoder();
         const data = encoder.encode(message);
         const hashBuffer = await crypto.subtle.digest('SHA-1', data);
@@ -45,32 +46,33 @@
     async function processDownload() {
         const urlInput = document.getElementById('reelUrl').value.trim();
         const status = document.getElementById('status');
-        if(!urlInput) return alert("URL daalein!");
+        const btn = document.getElementById('mainBtn');
 
-        // Servers ko shuffle karna (Original site logic)
-        let activeServers = [...SERVER_LIST].sort(() => 0.5 - Math.random());
+        if(!urlInput) return alert("Please paste a link!");
+
+        // UI Reset
+        status.innerHTML = "Connecting directly to server...";
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+
         let success = false;
 
-        // CORS Proxy bypass
-        const proxy = "https://api.allorigins.win/raw?url=";
+        // Servers ko shuffle karke try karein
+        const shuffledServers = SERVERS.sort(() => 0.5 - Math.random());
 
-        for (let server of activeServers) {
-            if (success) break;
-            
-            status.innerHTML = `Checking Server: ${server.split('.')[0].split('//')[1]}...`;
-
+        for(let server of shuffledServers) {
+            if(success) break;
             try {
-                // Step 1: Token fetch karein
-                const tResp = await fetch(proxy + encodeURIComponent(server + "/get-token"));
-                if (!tResp.ok) continue;
+                // STEP 1: Get Token
+                const tResp = await fetch(PROXY + encodeURIComponent(server + "/get-token"));
                 const tData = await tResp.json();
                 const token = tData.token;
 
-                // Step 2: Signature banayein
-                const signature = await generateSHA1(token + urlInput + _xSalt);
+                // STEP 2: Make Signature
+                const signature = await makeSignature(token, urlInput);
 
-                // Step 3: API Request
-                const response = await fetch(proxy + encodeURIComponent(server + "/"), {
+                // STEP 3: Fetch Video
+                const response = await fetch(PROXY + encodeURIComponent(server + "/"), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -82,19 +84,22 @@
 
                 const data = await response.json();
 
-                if (data.url) {
-                    status.innerHTML = `<a href="${data.url}" target="_blank" class="dl-link">✔ Video Taiyaar Hai (Download)</a>`;
+                if(data.url || data.status === "success") {
+                    const finalUrl = data.url || data.link;
+                    status.innerHTML = `<a href="${finalUrl}" target="_blank" class="result-link">✔ DOWNLOAD VIDEO NOW</a>`;
                     success = true;
                     break;
                 }
-            } catch (e) {
-                console.log(`${server} fail ho gaya, agla try kar rahe hain...`);
+            } catch (err) {
+                console.log("Server failed, trying next...");
             }
         }
 
-        if (!success) {
-            status.innerHTML = "<span style='color:#ef4444;'>Saare servers block hain. Website par security tight hai.</span>";
+        if(!success) {
+            status.innerHTML = "<span style='color:#ef4444;'>Error: Saare servers ne block kiya hai. Website refresh karke try karein.</span>";
         }
+        btn.disabled = false;
+        btn.style.opacity = "1";
     }
 </script>
 </body>
