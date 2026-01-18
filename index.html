@@ -2,75 +2,74 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Insta Reel Downloader - Final Fix</title>
+    <title>Insta Downloader - Bypass Pro</title>
     <style>
         body { font-family: sans-serif; background: #09090b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .card { background: #18181b; padding: 2rem; border-radius: 15px; border: 1px solid #27272a; width: 100%; max-width: 400px; text-align: center; }
-        input { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #27272a; background: #000; color: white; box-sizing: border-box; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #27272a; background: #000; color: white; margin-bottom: 20px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background: linear-gradient(45deg, #f09433, #dc2743); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-        #status { margin-top: 20px; font-size: 0.9rem; color: #94a3b8; }
-        .dl-link { display: block; margin-top: 15px; color: #22c55e; font-weight: bold; text-decoration: none; border: 1px solid #22c55e; padding: 10px; border-radius: 5px; }
+        #status { margin-top: 15px; color: #94a3b8; }
+        .dl-btn { display: block; margin-top: 20px; color: #22c55e; border: 1px solid #22c55e; padding: 10px; border-radius: 5px; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>Reel Downloader</h2>
-        <input type="text" id="urlInput" placeholder="Paste Instagram Link Here...">
-        <button onclick="processDownload()">Download Video</button>
-        <div id="status"></div>
-    </div>
 
-    <script>
-        // Source code se nikala gaya logic
-        const SALT = "Khushi_Secret_Salt_2026"; 
-        const PROXY = "https://api.allorigins.win/raw?url="; 
+<div class="card">
+    <h2>Reel Saver</h2>
+    <input type="text" id="reelLink" placeholder="Paste Instagram Link...">
+    <button onclick="startDownload()">Get Video Link</button>
+    <div id="status"></div>
+</div>
 
-        async function makeSignature(token, url) {
-            const message = token + url + SALT;
-            const encoder = new TextEncoder();
-            const data = encoder.encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-1', data);
-            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
+<script>
+    async function startDownload() {
+        const urlInput = document.getElementById('reelLink').value.trim();
+        const status = document.getElementById('status');
+        const salt = "Khushi_Secret_Salt_2026"; // Source code se mila
+        
+        if(!urlInput) return alert("Link daalein!");
 
-        async function processDownload() {
-            const url = document.getElementById('urlInput').value.trim();
-            const status = document.getElementById('status');
-            const target = "https://cdn4.fizbk4.workers.dev"; // Original API
+        status.innerHTML = "Bypassing Security...";
 
-            if(!url) return alert("Link daalein!");
-            status.innerHTML = "Processing... (Bypassing Bot Detection)";
+        // Nayi Proxy (Jo block kam hoti hai)
+        const proxy = "https://api.codetabs.com/v1/proxy?quest=";
+        const targetServer = "https://cdn4.fizbk4.workers.dev"; // Unka worker server
 
-            try {
-                // 1. Token lein
-                const tResp = await fetch(PROXY + encodeURIComponent(target + "/get-token"));
-                const tData = await tResp.json();
-                const token = tData.token;
+        try {
+            // 1. Token nikaalein
+            const tResp = await fetch(proxy + encodeURIComponent(targetServer + "/get-token"));
+            const tData = await tResp.json();
+            const token = tData.token;
 
-                // 2. Signature banayein
-                const sig = await makeSignature(token, url);
+            // 2. Signature banayein (SHA-1 Logic)
+            const message = token + urlInput + salt;
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
+            const signature = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-                // 3. Main Request (Directly from browser via AllOrigins)
-                const response = await fetch(PROXY + encodeURIComponent(target + "/"), {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        url: url,
-                        "X-Token-ID": token,
-                        "X-Signature": sig
-                    })
-                });
+            // 3. Main Fetch Request (Using POST via Proxy)
+            // Note: Codetabs proxy POST request me headers bypass karti hai
+            const response = await fetch(proxy + encodeURIComponent(targetServer + "/"), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    url: urlInput,
+                    "X-Token-ID": token,
+                    "X-Signature": signature
+                })
+            });
 
-                const data = await response.json();
-                if(data.url) {
-                    status.innerHTML = `<a href="${data.url}" target="_blank" class="dl-link">✔ Video Taiyaar Hai (Download)</a>`;
-                } else {
-                    status.innerHTML = "<span style='color:red;'>Failed: Link nahi mila.</span>";
-                }
-            } catch (err) {
-                status.innerHTML = "<span style='color:red;'>Error: Security block ho gayi hai.</span>";
+            const data = await response.json();
+            if(data.url) {
+                status.innerHTML = `<a href="${data.url}" target="_blank" class="dl-btn">✔ DOWNLOAD NOW</a>`;
+            } else {
+                status.innerHTML = "<span style='color:red;'>Failed: Access Denied</span>";
             }
+        } catch (e) {
+            status.innerHTML = "<span style='color:red;'>Connection Error. Proxy block ho sakti hai.</span>";
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
