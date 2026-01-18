@@ -2,105 +2,75 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insta Reel Downloader - Final Fix</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #09090b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #18181b; padding: 2rem; border-radius: 20px; border: 1px solid #27272a; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #27272a; background: #000; color: white; margin-bottom: 20px; box-sizing: border-box; outline: none; }
-        button { width: 100%; padding: 14px; border-radius: 10px; border: none; background: linear-gradient(45deg, #f09433, #dc2743); color: white; font-weight: bold; cursor: pointer; font-size: 16px; }
-        #status { margin-top: 20px; font-size: 0.9rem; color: #94a3b8; line-height: 1.5; }
-        .result-link { display: block; margin-top: 20px; color: #22c55e; font-weight: bold; text-decoration: none; border: 2px solid #22c55e; padding: 12px; border-radius: 10px; transition: 0.3s; }
-        .result-link:hover { background: #22c55e; color: white; }
+        body { font-family: sans-serif; background: #09090b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #18181b; padding: 2rem; border-radius: 15px; border: 1px solid #27272a; width: 100%; max-width: 400px; text-align: center; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #27272a; background: #000; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: linear-gradient(45deg, #f09433, #dc2743); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
+        #status { margin-top: 20px; font-size: 0.9rem; color: #94a3b8; }
+        .dl-link { display: block; margin-top: 15px; color: #22c55e; font-weight: bold; text-decoration: none; border: 1px solid #22c55e; padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
+    <div class="card">
+        <h2>Reel Downloader</h2>
+        <input type="text" id="urlInput" placeholder="Paste Instagram Link Here...">
+        <button onclick="processDownload()">Download Video</button>
+        <div id="status"></div>
+    </div>
 
-<div class="card">
-    <h2 style="margin-bottom: 10px;">Reel Saver Pro</h2>
-    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">Direct Device-to-Server Method (No Worker)</p>
-    <input type="text" id="reelUrl" placeholder="Paste Instagram Link Here...">
-    <button onclick="processDownload()" id="mainBtn">Video Download Karein</button>
-    <div id="status"></div>
-</div>
+    <script>
+        // Source code se nikala gaya logic
+        const SALT = "Khushi_Secret_Salt_2026"; 
+        const PROXY = "https://api.allorigins.win/raw?url="; 
 
-<script>
-    // --- Configuration (Source Code Logic) ---
-    const SERVERS = [
-        "https://cdn1.fizbk1.workers.dev", "https://cdn2.fizbk2.workers.dev",
-        "https://cdn4.fizbk4.workers.dev", "https://cdn10.fizbk10.workers.dev"
-    ];
-    const SALT = "Khushi_Secret_Salt_2026"; //
-    const PROXY = "https://api.allorigins.win/raw?url="; //
+        async function makeSignature(token, url) {
+            const message = token + url + SALT;
+            const encoder = new TextEncoder();
+            const data = encoder.encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', data);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
-    // SHA-1 Signature Function
-    async function makeSignature(token, url) {
-        const message = token + url + SALT; //
-        const encoder = new TextEncoder();
-        const data = encoder.encode(message);
-        const hashBuffer = await crypto.subtle.digest('SHA-1', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
+        async function processDownload() {
+            const url = document.getElementById('urlInput').value.trim();
+            const status = document.getElementById('status');
+            const target = "https://cdn4.fizbk4.workers.dev"; // Original API
 
-    async function processDownload() {
-        const urlInput = document.getElementById('reelUrl').value.trim();
-        const status = document.getElementById('status');
-        const btn = document.getElementById('mainBtn');
+            if(!url) return alert("Link daalein!");
+            status.innerHTML = "Processing... (Bypassing Bot Detection)";
 
-        if(!urlInput) return alert("Please paste a link!");
-
-        // UI Reset
-        status.innerHTML = "Connecting directly to server...";
-        btn.disabled = true;
-        btn.style.opacity = "0.5";
-
-        let success = false;
-
-        // Servers ko shuffle karke try karein
-        const shuffledServers = SERVERS.sort(() => 0.5 - Math.random());
-
-        for(let server of shuffledServers) {
-            if(success) break;
             try {
-                // STEP 1: Get Token
-                const tResp = await fetch(PROXY + encodeURIComponent(server + "/get-token"));
+                // 1. Token lein
+                const tResp = await fetch(PROXY + encodeURIComponent(target + "/get-token"));
                 const tData = await tResp.json();
                 const token = tData.token;
 
-                // STEP 2: Make Signature
-                const signature = await makeSignature(token, urlInput);
+                // 2. Signature banayein
+                const sig = await makeSignature(token, url);
 
-                // STEP 3: Fetch Video
-                const response = await fetch(PROXY + encodeURIComponent(server + "/"), {
+                // 3. Main Request (Directly from browser via AllOrigins)
+                const response = await fetch(PROXY + encodeURIComponent(target + "/"), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        url: urlInput,
+                        url: url,
                         "X-Token-ID": token,
-                        "X-Signature": signature
+                        "X-Signature": sig
                     })
                 });
 
                 const data = await response.json();
-
-                if(data.url || data.status === "success") {
-                    const finalUrl = data.url || data.link;
-                    status.innerHTML = `<a href="${finalUrl}" target="_blank" class="result-link">✔ DOWNLOAD VIDEO NOW</a>`;
-                    success = true;
-                    break;
+                if(data.url) {
+                    status.innerHTML = `<a href="${data.url}" target="_blank" class="dl-link">✔ Video Taiyaar Hai (Download)</a>`;
+                } else {
+                    status.innerHTML = "<span style='color:red;'>Failed: Link nahi mila.</span>";
                 }
             } catch (err) {
-                console.log("Server failed, trying next...");
+                status.innerHTML = "<span style='color:red;'>Error: Security block ho gayi hai.</span>";
             }
         }
-
-        if(!success) {
-            status.innerHTML = "<span style='color:#ef4444;'>Error: Saare servers ne block kiya hai. Website refresh karke try karein.</span>";
-        }
-        btn.disabled = false;
-        btn.style.opacity = "1";
-    }
-</script>
+    </script>
 </body>
 </html>
