@@ -1,56 +1,80 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-<meta charset="utf-8">
-<title>SSL Not Available</title>
-<style>
-    body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #f5f7fa;
-        font-family: Arial, sans-serif;
-        color: #333;
-    }
-    .box {
-        text-align: center;
-        padding: 40px 60px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        max-width: 500px;
-    }
-    h1 {
-        margin: 0 0 15px;
-        font-size: 26px;
-        font-weight: 600;
-        color: #c0392b;
-    }
-    p {
-        font-size: 16px;
-        opacity: 0.85;
-        line-height: 1.5;
-    }
-    a {
-        color: #0077cc;
-        text-decoration: none;
-        font-weight: 600;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Reel Downloader</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; }
+        h2 { color: #d62976; margin-bottom: 1.5rem; }
+        input { width: 90%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 1rem; outline: none; transition: 0.3s; }
+        input:focus { border-color: #d62976; }
+        button { background: #d62976; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
+        button:hover { background: #fa7e1e; }
+        #result { margin-top: 20px; word-break: break-all; }
+        .download-btn { display: inline-block; margin-top: 10px; background: #4CAF50; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #d62976; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: none; margin: 10px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-<div class="box">
-    <h1>SSL Not Available</h1>
-    <p>External SSL certificates are not supported on this account.  
-    To enable SSL support, please purchase the SSL addon.</p>
-    <p><a href="https://www.freehosting.com/client/cart.php?gid=addons" target="_blank">Buy SSL Addon</a></p>
+
+<div class="card">
+    <h2>Reel Downloader</h2>
+    <input type="text" id="reelUrl" placeholder="Paste Instagram Reel Link Here...">
+    <button onclick="downloadVideo()" id="btnText">Video Link Nikalein</button>
+    <div class="loader" id="loader"></div>
+    <div id="result"></div>
 </div>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"9e0b96ded8794a79962f248e7786ac30","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+
+<script>
+    async function downloadVideo() {
+        const urlInput = document.getElementById('reelUrl').value;
+        const resultDiv = document.getElementById('result');
+        const loader = document.getElementById('loader');
+        const btn = document.getElementById('btnText');
+
+        if (!urlInput) {
+            alert("Please paste a URL first!");
+            return;
+        }
+
+        // UI Reset
+        resultDiv.innerHTML = "";
+        loader.style.display = "block";
+        btn.disabled = true;
+
+        try {
+            // AAPKA WORKER URL
+            const workerUrl = 'https://dry-bar-ef61.vermaumrao09.workers.dev';
+
+            const response = await fetch(workerUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reelUrl: urlInput })
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success" && data.url) {
+                resultDiv.innerHTML = `
+                    <p style="color: green;">Video Taiyaar Hai!</p>
+                    <a href="${data.url}" target="_blank" class="download-btn">Download Video</a>
+                    <p style="font-size: 12px; margin-top: 10px; color: #666;">Note: Link par click karke 3 dots par click karein aur Download chunein.</p>
+                `;
+            } else {
+                resultDiv.innerHTML = `<p style="color: red;">Error: Video nahi mil saki. Token ya Signature expire ho sakta hai.</p>`;
+            }
+        } catch (error) {
+            resultDiv.innerHTML = `<p style="color: red;">Worker Error: Check console for details.</p>`;
+            console.error(error);
+        } finally {
+            loader.style.display = "none";
+            btn.disabled = false;
+        }
+    }
+</script>
+
 </body>
 </html>
